@@ -452,7 +452,7 @@ st.markdown(AZTEC_CSS, unsafe_allow_html=True)
 @st.cache_data(show_spinner=False)
 def load_all_data():
     """Load and prepare the full dataset for streaming."""
-    parquet_path = DATA_DIR / "elliptic_txs_features.parquet"
+    parquet_path = DATA_DIR / "elliptic_features_optimized.parquet"
     csv_path = DATA_DIR / "elliptic_txs_features.csv"
     
     if parquet_path.exists():
@@ -791,7 +791,7 @@ def render_dashboard():
     """Main dashboard rendering function."""
 
     # ── CHECK DATA & MODEL ─────────────────────────────────────
-    data_ready = (DATA_DIR / "elliptic_txs_features.csv").exists() or (DATA_DIR / "elliptic_txs_features.parquet").exists()
+    data_ready = (DATA_DIR / "elliptic_txs_features.csv").exists() or (DATA_DIR / "elliptic_features_optimized.parquet").exists()
     model_ready = (MODEL_DIR / "xgb_aml_model.pkl").exists()
 
     if not data_ready or not model_ready:
