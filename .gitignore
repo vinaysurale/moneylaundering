@@ -1,4 +1,4 @@
-data/
+data/elliptic_txs_features.csv
 __pycache__/
 .pytest_cache/
 .DS_Store

@@ -452,7 +452,14 @@ st.markdown(AZTEC_CSS, unsafe_allow_html=True)
 @st.cache_data(show_spinner=False)
 def load_all_data():
     """Load and prepare the full dataset for streaming."""
-    features_df = pd.read_csv(DATA_DIR / "elliptic_txs_features.csv", header=None)
+    parquet_path = DATA_DIR / "elliptic_txs_features.parquet"
+    csv_path = DATA_DIR / "elliptic_txs_features.csv"
+    
+    if parquet_path.exists():
+        features_df = pd.read_parquet(parquet_path)
+    else:
+        features_df = pd.read_csv(csv_path, header=None)
+        
     features_df.columns = (
         ["txId", "time_step"]
         + [f"feat_{i}" for i in range(features_df.shape[1] - 2)]
@@ -784,7 +791,7 @@ def render_dashboard():
     """Main dashboard rendering function."""
 
     # ── CHECK DATA & MODEL ─────────────────────────────────────
-    data_ready = (DATA_DIR / "elliptic_txs_features.csv").exists()
+    data_ready = (DATA_DIR / "elliptic_txs_features.csv").exists() or (DATA_DIR / "elliptic_txs_features.parquet").exists()
     model_ready = (MODEL_DIR / "xgb_aml_model.pkl").exists()
 
     if not data_ready or not model_ready:
